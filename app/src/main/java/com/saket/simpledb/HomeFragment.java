@@ -65,15 +65,6 @@ public class HomeFragment extends Fragment {
             navController.navigate(R.id.action_homeFragment_to_addEditFragment);
         });
     }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mStudentList = mDBHelper.getListStudent();
-        //Init adapter
-        studentAdapter.notifyDataSetChanged();
-    }
-
     private void setUpRecyclerView() {
 
         studentAdapter = new studentAdapter(mStudentList, new studentAdapter.studentOnClickListener() {
@@ -98,6 +89,8 @@ public class HomeFragment extends Fragment {
         Students student = mStudentList.get(i);
         mStudentList.remove(i);
         studentAdapter.notifyItemRemoved(i);
+        studentAdapter.notifyItemRangeChanged(i,mStudentList.size());
+       // studentAdapter.notifyDataSetChanged();
         mDBHelper.deleteStudentById(student.getId());
         Log.i("Home Fragment Delete",mStudentList.toString());
 
